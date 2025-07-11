@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Juice World</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body, html { height: 100%; font-family: 'Segoe UI', Tahoma, sans-serif; }
+  .container { display: flex; height: 100vh; }
+
+  .left { 
+    flex: 1; 
+    background: #f7f7f7;
+    display: grid;
+    grid-template-rows: 1fr 2fr;
+  }
+
+  .logo-box {
+    background: #ffa500;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 2rem; font-weight: bold; color: white;
+  }
+
+  .menu-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    padding: 10px;
+  }
+
+  .menu-item {
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.6rem;
+  font-weight: 800;
+  cursor: pointer;
+  transition: transform 0.3s;
+  border-radius: 10px;
+  color: white;
+  text-shadow: 1px 1px 4px rgba(0,0,0,0.7);
+  height: 150px; /* adjust as needed */
+  overflow: hidden;
+}
+
+/* Different background images */
+.smoothies { background-image: url('images/smothies.jpg'); }
+.milkshakes { background-image: url('images/milk.jpg'); }
+.juices     { background-image: url('images/fresh.jpg'); }
+.detox      { background-image: url('images/detox.jpg'); }
+.about      { background-image: url('images/about.jpg'); }
+.contact    { background-image: url('images/contact.jpg'); }
+
+/* Optional: hover effect */
+.menu-item:hover {
+  transform: scale(1.05);
+}
+
+
+  .right {
+    flex: 2;
+    position: relative;
+    overflow-y: auto;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 30px;
+    color: white;
+  }
+
+  #bg-video {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 0;
+  }
+
+  .overlay-content {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 800px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  backdrop-filter: brightness(0.8); /* keep the transparent dark effect */
+  padding-top: 20px;
+
+  overflow-y: auto;       /* enable vertical scroll */
+  max-height: 100%; 
+   scrollbar-width: none;        
+}
+
+
+  .category-title {
+    font-size: 2.2rem;
+    margin-bottom: 20px;
+    font-weight: bold;
+    text-align: center;
+    color: #fff;
+    text-shadow: 0 0 8px rgba(0,0,0,0.6);
+  }
+
+  .varieties {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;
+    width: 100%;
+  }
+
+  .variety-card {
+  display: flex;
+  background: rgba(255, 255, 255, 0.6); /* more transparent */
+  border-radius: 12px;
+  overflow: hidden;
+  max-width: 500px;
+  width: 100%;
+  height: 160px;
+  color: #333;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  transition: transform 0.2s;
+  backdrop-filter: blur(5px); /* optional: adds a glass effect */
+}
+
+  .variety-card:hover {
+    transform: translateY(-3px);
+  }
+
+  .variety-card img {
+    width: 160px;
+    height: 160px;
+    object-fit: cover;
+    flex-shrink: 0;
+  }
+
+  .details {
+    flex: 1;
+    padding: 15px 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .details .name {
+    font-weight: 600;
+    font-size: 1.3rem;
+    margin-bottom: 8px;
+  }
+
+  .details .price {
+    color: #666;
+    font-size: 1.1rem;
+  }
+
+  .overlay-content p {
+    text-align: center;
+    font-size: 1.1rem;
+    margin-bottom: 10px;
+    color: #fff;
+    text-shadow: 0 0 6px rgba(0,0,0,0.6);
+  }
+
+.logo-image {
+  max-width: 500px;      /* adjust size as you like */
+  margin-bottom: 8px;   /* space between image and text */
+  border-radius: 10px;  /* optional: slightly rounded corners */
+}
+
+.logo-box {
+  position: relative;
+  background: url('images/juices.jpg') center center / cover no-repeat;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 3.4rem;           /* slightly smaller but still bold */
+  font-weight: 900;
+  color: white;
+  text-shadow: 2px 2px 5px rgba(0,0,0,0.7);
+  height: 100%;
+  padding: 10px;
+  letter-spacing: 1.2px;
+  font-family: 'Segoe UI', Tahoma, sans-serif;
+  overflow: hidden;
+}
+
+.logo-box::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: inherit;
+  filter: blur(3px) brightness(0.85);  /* reduced blur and brightness */
+  z-index: 0;
+}
+
+.logo-box span {
+  position: relative;
+  z-index: 1;
+}
+
+.about-flex {
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;     /* text and image aligned at top */
+  margin-top: 60px;
+  padding-bottom: 40px;
+}
+
+.about-text {
+  flex: 2;
+  text-align: justify;
+    text-justify: inter-word;
+  font-size: 1.05rem;
+  line-height: 1.6;
+  color: #fff;
+  text-shadow: 0 0 6px rgba(0,0,0,0.6);
+}
+
+.about-image {
+  flex: 1;
+  max-width: 400px;     /* adjust as needed */
+  width: 100%;
+  border-radius: 10px;
+  object-fit: cover;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+}
+
+.contact-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  width: 100%;
+  max-width: 500px;
+  margin-top: 50px;
+  padding-bottom: 30px;
+}
+
+.contact-form input,
+.contact-form textarea {
+  padding: 10px 14px;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  color: #333;
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+}
+
+.contact-form textarea {
+  resize: vertical;
+}
+
+.contact-form button {
+  padding: 10px 14px;
+  background: transparent;              /* transparent background */
+  border: 2px solid white;              /* white border */
+  color: white;                         /* white text */
+  border-radius: 8px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s, color 0.3s;
+}
+
+.contact-form button:hover {
+  background: #ffa500;                  /* orange background on hover */
+  color: white;                         /* keep text white */
+}
+
+
+/* For tablets (max-width: 768px) */
+@media (max-width: 768px) {
+  .container {
+    flex-direction: column;   /* left and right stack vertically */
+  }
+  .left, .right {
+    width: 100%;
+    flex: none;
+  }
+  .logo-box {
+    font-size: 6vw;           /* scale logo text */
+    min-height: 60px;
+  }
+  .menu-grid {
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  }
+  .menu-item {
+    height: 100px;
+    font-size: 1.2rem;
+  }
+  .about-flex {
+    flex-direction: column;
+    align-items: center;
+  }
+  .about-image {
+    max-width: 100%;
+  }
+}
+
+/* For small phones (max-width: 480px) */
+@media (max-width: 480px) {
+  .logo-box {
+    font-size: 7vw;
+  }
+  .menu-item {
+    font-size: 1rem;
+    height: 90px;
+  }
+  .category-title {
+    font-size: 1.6rem;
+  }
+  .details .name {
+    font-size: 1rem;
+  }
+  .details .price {
+    font-size: 0.9rem;
+  }
+}
+@media (max-width: 768px) {
+  .right {
+    overflow: hidden; /* prevent the video height from growing */
+  }
+  .overlay-content {
+    overflow-y: auto;
+    max-height: 40vh; /* limit height so it can scroll inside */
+    padding-bottom: 20px;
+  }
+}
+
+
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="left">
+  <div class="logo-box">
+ <span> Juice World</span>
+</div>
+    <div class="menu-grid">
+  <div class="menu-item smoothies" onclick="showVarieties('Smoothies')">Smoothies</div>
+  <div class="menu-item milkshakes" onclick="showVarieties('Milkshakes')">Milkshakes</div>
+  <div class="menu-item juices" onclick="showVarieties('Fresh Juices')">Fresh Juices</div>
+  <div class="menu-item detox" onclick="showVarieties('Detox Drinks')">Detox Drinks</div>
+  <div class="menu-item about" onclick="showAbout()">About</div>
+  <div class="menu-item contact" onclick="showContact()">Contact</div>
+</div>
+  </div>
+  <div class="right">
+    <video autoplay muted loop playsinline id="bg-video">
+      <source src="C:\Users\gisha\Desktop\new js\images\2812061-uhd_3840_2160_30fps.mp4" type="video/mp4">
+      Your browser does not support video.
+    </video>
+    <div class="overlay-content" id="overlay-content">
+      <div class="category-title">Welcome to Juice World!</div>
+      <p>Choose your favorite category and explore our fresh, tasty drinks!.</p>
+    </div>
+  </div>
+</div>
+
+<script>
+const varietiesData = {
+  'Smoothies': [
+    { name: 'Strawberry Banana', price: '$4.99', img: 'images/smoo.jpg' },
+    { name: 'Mango Magic', price: '$5.49', img: 'images/mango.jpg' },
+    { name: 'Berry Blast', price: '$5.29', img: 'images/berry.jpg' },
+    { name: 'Avocado Honey', price: '$5.79', img: 'images/ava.jpg' },
+    { name: 'Peanut Butter Protein', price: '$5.99', img: 'images/smoo.jpg' }
+  ],
+  'Milkshakes': [
+    { name: 'Chocolate', price: '$4.49', img: 'images/choco.jpg' },
+    { name: 'Strawberry', price: '$4.29', img: 'images/smoo.jpg' },
+    { name: 'Banana Caramel', price: '$4.69', img: 'images/banana.jpg' },
+    { name: 'Oreo Shake', price: '$4.99', img: 'images/oreo.jpg' },
+    { name: 'Nutella Shake', price: '$5.29', img: 'images/nutel.jpg' }
+  ],
+  'Fresh Juices': [
+    { name: 'Orange Juice', price: '$3.99', img: 'images/orange.jpg' },
+    { name: 'Apple Mint', price: '$4.29', img: 'images/apple.jpg' },
+    { name: 'Watermelon Cooler', price: '$4.19', img: 'images/smoo.jpg' },
+    { name: 'Pineapple Punch', price: '$4.39', img: 'images/pine.jpg' },
+    { name: 'Carrot Ginger', price: '$4.49', img: 'images/carrot.jpg' }
+  ],
+  'Detox Drinks': [
+    { name: 'Lemon Ginger Detox', price: '$3.79', img: 'images/ginger.jpg' },
+    { name: 'Green Cleanse', price: '$3.99', img: 'images/green.jpg' },
+    { name: 'Honey Lemon Water', price: '$3.59', img: 'images/honey.jpg' },
+    { name: 'ABC Juice', price: '$4.09', img: 'images/carrot.jpg' },
+    { name: 'Wheatgrass Shot', price: '$2.99', img: 'images/ginger.jpg' }
+  ]
+};
+
+function showVarieties(category) {
+  const overlay = document.getElementById('overlay-content');
+  let html = `<div class="category-title">${category}</div><div class="varieties">`;
+  varietiesData[category].forEach(item => {
+    html += `
+      <div class="variety-card">
+        <img src="${item.img}" alt="${item.name}">
+        <div class="details">
+          <div class="name">${item.name}</div>
+          <div class="price">${item.price}</div>
+        </div>
+      </div>`;
+  });
+  html += '</div>';
+  overlay.innerHTML = html;
+}
+
+function showAbout() {
+  document.getElementById('overlay-content').innerHTML = `
+    <div class="category-title">About Juice World</div>
+    <p class="intro-para">We blend freshness, health, and taste to bring you delicious smoothies, shakes, juices, and detox drinks. Welcome to our fruity universe!</p>
+    <div class="about-flex">
+      <p class="about-text">
+        At Juice World, we believe in using only the freshest fruits and natural ingredients to craft our drinks. 
+        From energizing smoothies to classic milkshakes, every sip is a step toward healthy indulgence. 
+        We explore bold flavor combinations, ensuring each recipe brings both taste and nutrition. 
+        Our detox drinks cleanse and revitalize, while our fresh juices keep you refreshed all day. 
+        Inspired by nature, driven by passion, our mission is to make healthy choices exciting and delicious. 
+        Thank you for making Juice World your go-to refreshment spot!
+      </p>
+      <img src="images/about.jpg" alt="About Juice World" class="about-image">
+    </div>
+  `;
+}
+
+
+
+function showContact() {
+  document.getElementById('overlay-content').innerHTML = `
+    <div class="category-title">Contact Us</div>
+    <p>Email: hello@juiceworld.com</p>
+    <p>Phone: +1-234-567-890</p>
+    <p>Address: 123 Juice Street, Fresh City</p>
+
+    <form class="contact-form">
+      <input type="text" placeholder="Your Name" required>
+      <input type="email" placeholder="Your Email" required>
+      <textarea placeholder="Your Message" rows="5" required></textarea>
+      <button type="submit">Send Message</button>
+    </form>
+  `;
+}
+</script>
+</body>
+</html>
