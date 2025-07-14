@@ -212,10 +212,9 @@
   padding-bottom: 40px;
 }
 
-.about-text {
+.about-text{
   flex: 2;
   text-align: justify;
-    text-justify: inter-word;
   font-size: 1.05rem;
   line-height: 1.6;
   color: #fff;
@@ -229,16 +228,17 @@
   border-radius: 10px;
   object-fit: cover;
   box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  padding: 10px;
 }
 
 .contact-form {
   display: flex;
   flex-direction: column;
   gap: 15px;
-  width: 100%;
+  width: 90%;
   max-width: 500px;
-  margin-top: 50px;
-  padding-bottom: 30px;
+  margin-top: 10px;
+  padding-bottom: 10px;
 }
 
 .contact-form input,
@@ -302,6 +302,7 @@
   .about-flex {
     flex-direction: column;
     align-items: center;
+    margin-top: -0px;
   }
 
   .about-image {
@@ -438,6 +439,8 @@ function showAbout() {
     <div class="category-title">About Juice World</div>
     <p class="intro-para">We blend freshness, health, and taste to bring you delicious smoothies, shakes, juices, and detox drinks. Welcome to our fruity universe!</p>
     <div class="about-flex">
+            <img src="images/about.jpg" alt="About Juice World" class="about-image">
+
       <p class="about-text">
         At Juice World, we believe in using only the freshest fruits and natural ingredients to craft our drinks. 
         From energizing smoothies to classic milkshakes, every sip is a step toward healthy indulgence. 
@@ -446,7 +449,6 @@ function showAbout() {
         Inspired by nature, driven by passion, our mission is to make healthy choices exciting and delicious. 
         Thank you for making Juice World your go-to refreshment spot!
       </p>
-      <img src="images/about.jpg" alt="About Juice World" class="about-image">
     </div>
   `;
 }
